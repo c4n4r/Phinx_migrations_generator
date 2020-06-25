@@ -1,18 +1,21 @@
 {
-    "name": "c4n4r/phinx_migration_generator",
-    "version": "0.1.0-beta1",
-    "type": "library",
-    "description": "A simple lib to generate phinx migration file from your actual database",
-    "license": "MIT",
-    "authors": [{
-      "name": "Hadrien Delphin",
-      "email": "delphin.hadrien@gmail.com",
-      "role": "Developer"
-    }],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Jobs\\":"./"
-        }
+  "name": "c4n4r/phinx_migration_generator",
+  "version": "0.1.0",
+  "type": "library",
+  "description": "A simple lib to generate phinx migration file from your actual database",
+  "license": "mit",
+  "authors": [{
+    "name": "Hadrien Delphin",
+    "email": "delphin.hadrien@gmail.com",
+    "role": "Developer"
+  }],
+  "require": {
+    "php": ">=7.2.0"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Jobs\\":"./"
     }
+  }
 }
