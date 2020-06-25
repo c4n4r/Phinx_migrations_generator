@@ -1,5 +1,5 @@
 {
-    "name": "hadrien/jobs",
+    "name": "c4n4r/phinx_migration_generator",
     "require": {},
     "autoload": {
         "psr-4": {
