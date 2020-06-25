@@ -1,0 +1,9 @@
+{
+    "name": "hadrien/jobs",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Jobs\\":"./"
+        }
+    }
+}
