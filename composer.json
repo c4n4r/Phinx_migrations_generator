@@ -1,7 +1,7 @@
 {
   "name": "c4n4r/phinx_migration_generator",
   "type": "library",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "A simple lib to generate phinx migration file from your actual database STILL IN BETA!!",
   "license": "mit",
   "authors": [{
