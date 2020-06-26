@@ -37,7 +37,7 @@ class MigrationsManager
         $stm->execute();
         $tables = $stm->fetchAll();
         $filename = time()."_initial_migration_$databaseName.php";
-        $path = __DIR__ . "/migrations/";
+        $path = __DIR__ . "/../migrations/";
         $file = fopen($path.$filename,"w") or die("Unable to open file!");
         $line = "<?php\n use Phinx\Migration\AbstractMigration;\n use Phinx\Db\Adapter\MysqlAdapter;\n";
         $line .= "class InitialMigration".ucwords(GeneralTools::toCamelCase($databaseName))." extends AbstractMigration{\n\n";
