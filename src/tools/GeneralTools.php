@@ -11,7 +11,6 @@ namespace Jobs\Tools;
 
 class GeneralTools
 {
-
     public static function getStringBetween($string, $start, $end){
         $string = ' ' . $string;
         $ini = strpos($string, $start);
