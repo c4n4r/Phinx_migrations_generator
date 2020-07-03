@@ -6,8 +6,8 @@
  * Time: 15:52
  */
 
-use Jobs\DeploymentManager;
+use Jobs\Generator;
 
 require './vendor/autoload.php';
-DeploymentManager::createMigrationManually();
+Generator::createMigrationManually();
 

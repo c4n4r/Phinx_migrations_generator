@@ -48,9 +48,11 @@ class MigrationsManager
 
         foreach ($tables as $tableArray){
             $tableName = $tableArray[0];
-            echo("Creating schema for the table : $tableName \n");
-            //créer un fichier de migration
-            $line .= $this->generateMigrationData($tableName, $databaseName, $file);
+            if($tableName !== 'migrationsLogs'){
+                echo("Creating schema for the table : $tableName \n");
+                //créer un fichier de migration
+                $line .= $this->generateMigrationData($tableName, $databaseName, $file);
+            }
         }
 
         $foreignKeys = DataBaseTools::getForeignKeys($databaseName, $this->pdo);
@@ -130,12 +132,16 @@ class MigrationsManager
      */
     private function buildRowDatas(array $row):Array{
 
-        $response = ['label' => $row['Field'], 'type' => '', "params" => []];
+        $response = ['label' => $row['Field'], 'type' => '', "params" => [] , "configuration" => null];
         $type = explode('(',$row['Type'])[0];
         $type = str_replace(' unsigned', '', $type);
-        if($type === 'varchar' || $type === 'char' || $type === 'longtext'){$type = 'string';}
+
+        $response["configuration"] = $this->setupConfigByType($type);
+
+        if($type === 'varchar' || $type === 'char' || $type === 'longtext' || $type === 'text'){$type = 'string';}
         else if($type === 'int' || $type === 'tinyint' || $type === 'smallint' || $type = 'bigint'){$type = 'integer';}
         else if($type === 'mediumblob' || $type === 'longblob'){$type = 'blob';};
+
 
         $response['type'] = $type;
         $value = GeneralTools::getStringBetween($row['Type'], '(', ')');
@@ -147,6 +153,9 @@ class MigrationsManager
             array_push($response["params"],["key" => 'values', "value" => $values]);
         }
 
+        if($response["configuration"] !== null){
+            $response["params"] = [["key" => 'limit', "value" => $response["configuration"]]];
+        }
         if($row['Null'] == "YES") {
             array_push($response["params"],["key" => 'null', "value" => true]);
         }
@@ -180,5 +189,34 @@ class MigrationsManager
 
         return $line;
 
+    }
+
+    private function setupConfigByType(string $type){
+        echo"$type \n";
+        $configuration = 'MysqlAdapter::';
+        switch ($type){
+            case "text":
+                $configuration .= "TEXT_REGULAR";
+                break;
+            case "longtext":
+                $configuration .= "TEXT_LONG";
+                break;
+            case "mediumtext":
+                $configuration .= "TEXT_MEDIUM";
+                break;
+            case "blob":
+                $configuration .= "BLOB_REGULAR";
+                break;
+            case "mediumblob":
+                $configuration .= "BLOB_MEDIUM";
+                break;
+            case "longblob":
+                $configuration .= "BLOB_LONG";
+                break;
+            default :
+                $configuration = null;
+                break;
+        }
+        return $configuration;
     }
 }

@@ -4,7 +4,7 @@ require './vendor/autoload.php';
 use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
 
-class DeploymentManager {
+class Generator {
     static function createMigrationFile(Event $event){
         $migrationManger = new MigrationsManager();
         $migrationManger->generateMigrationFromActualDB($event->getArguments()[0],$event->getArguments()[1],$event->getArguments()[2],$event->getArguments()[3],$event->getArguments()[4]);
