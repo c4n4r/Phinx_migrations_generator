@@ -4,7 +4,7 @@ A simple lib to generate a migration file from your actual database
 
 ##Installation
 
-> composer require c4n4r/phinx_migration_generator:dev-master
+> composer require c4n4r/phinx_migration_generator
 
 ##usage 
 
