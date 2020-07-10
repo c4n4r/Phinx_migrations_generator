@@ -92,6 +92,7 @@ class MigrationsManager
                 }
                 $line = substr($line, 0, -1);
             }
+
             $line .= ']';
             $line .= ');'."\n";
         }
@@ -131,15 +132,14 @@ class MigrationsManager
      * Extrait les infos structurelles d'une row de table et les réstitue sous forme d'un tableau exploitable
      */
     private function buildRowDatas(array $row):Array{
-
-        $response = ['label' => $row['Field'], 'type' => '', "params" => [] , "configuration" => null];
+        $response = ['label' => $row['Field'], 'type' => '', "params" => [] , "configuration" => null, "default" => ""];
         $type = explode('(',$row['Type'])[0];
         $type = str_replace(' unsigned', '', $type);
 
-        $response["configuration"] = $this->setupConfigByType($type);
 
+        $response["configuration"] = $this->setupConfigByType($type);
         if($type === 'varchar' || $type === 'char' || $type === 'longtext' || $type === 'text'){$type = 'string';}
-        else if($type === 'int' || $type === 'tinyint' || $type === 'smallint' || $type = 'bigint'){$type = 'integer';}
+        else if($type === 'int' || $type === 'tinyint' || $type === 'smallint' || $type === 'bigint'){$type = 'integer';}
         else if($type === 'mediumblob' || $type === 'longblob'){$type = 'blob';};
 
 
@@ -158,6 +158,15 @@ class MigrationsManager
         }
         if($row['Null'] == "YES") {
             array_push($response["params"],["key" => 'null', "value" => true]);
+        }
+
+        if($row['Default']){
+            if($row["Default"] === "current_timestamp()"){
+                $value = "CURRENT_TIMESTAMP";
+            } else {
+                $value = $row["Default"];
+            }
+            array_push($response['params'],["key" => "default", "value" =>  "'$value'"]);
         }
         return $response;
     }
@@ -192,7 +201,6 @@ class MigrationsManager
     }
 
     private function setupConfigByType(string $type){
-        echo"$type \n";
         $configuration = 'MysqlAdapter::';
         switch ($type){
             case "text":
